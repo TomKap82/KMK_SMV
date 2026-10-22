@@ -55,6 +55,9 @@
             </button>
         </nav>
 
+        <button onclick="activateAdminSync()" class="text-xs text-slate-500 hover:text-slate-300 ml-4">
+            <i data-lucide="lock" class="w-3.5 h-3.5 inline"></i> Admin Sync
+        </button>
     </div>
 </header>
 
@@ -464,6 +467,84 @@
             navigator.serviceWorker.register('sw.js')
               .then(() => console.log('Service Worker registriert!'));
         }
+
+        // --- GITHUB API KONFIGURATION ---
+    const ghOwner = "TomKap82";
+    const ghRepo = "KMK_SMV";
+    const ghPath = "data.json";
+    let githubToken = "";
+    let fileSha = "";
+
+    // Daten laden beim Start (Ersetzt das reine localStorage, holt Daten von GitHub)
+    async function loadDataFromGitHub() {
+        try {
+            const response = await fetch(`https://api.github.com/repos/${ghOwner}/${ghRepo}/contents/${ghPath}`);
+            if(response.ok) {
+                const data = await response.json();
+                fileSha = data.sha; // SHA-Wert für künftige Updates sichern
+                const content = JSON.parse(atob(data.content));
+                
+                ideas = content.ideas || [];
+                actions = content.actions || [];
+            }
+        } catch (e) {
+            console.log("Konnte nicht von GitHub laden, nutze lokalen Speicher als Fallback.");
+        }
+        renderIdeas();
+        renderActions();
+    }
+
+    // Daten auf GitHub speichern (Jedes Mal, wenn eine Idee/Aktion erstellt oder abgestimmt wird)
+    async function syncToGitHub() {
+        // Wenn kein Token da ist (normale Schüler), speichern wir es vorerst nur lokal oder fordern optional Token.
+        // Für das zentrale Einsammeln: Wenn Schüler reinschreiben, soll es an GitHub gesendet werden.
+        // Da Schüler keinen Admin-Token haben sollen, gibt es zwei Wege:
+        // Entweder: Nur der Admin hat den Token zum Freigeben, ODER der Token ist hinterlegt (Achtung Sicherheit).
+        // Besser: Schüler schreiben rein, und du (als Admin) klickst einmal auf "Mit GitHub synchronisieren".
+        
+        if (!githubToken) {
+            // Nur lokal speichern, wenn kein Admin-Token aktiv ist
+            localStorage.setItem('smv_ideas', JSON.stringify(ideas));
+            localStorage.setItem('smv_actions', JSON.stringify(actions));
+            return;
+        }
+
+        const updatedContent = { ideas, actions };
+        const encodedContent = btoa(unescape(encodeURIComponent(JSON.stringify(updatedContent, null, 2))));
+
+        try {
+            const updateResp = await fetch(`https://api.github.com/repos/${ghOwner}/${ghRepo}/contents/${ghPath}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${githubToken}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: "Update der SMV-Daten über Web-App",
+                    content: encodedContent,
+                    sha: fileSha
+                })
+            });
+
+            if (updateResp.ok) {
+                const resData = await updateResp.json();
+                fileSha = resData.content.sha; // Neuen SHA für das nächste Mal sichern
+                console.erg("Erfolgreich mit GitHub synchronisiert!");
+            }
+        } catch (error) {
+            console.error("Fehler beim Sync mit GitHub:", error);
+        }
+    }
+
+    // Admin-Modus aktivieren (Token eingeben, um Schreibrechte zu erhalten)
+    function activateAdminSync() {
+        githubToken = prompt("Bitte GitHub Token eingeben (nur für Admin/Lehrer zur Synchronisation):");
+        if(githubToken) {
+            alert("Admin-Sync aktiviert! Änderungen werden jetzt direkt in das GitHub-Repository übertragen.");
+            syncToGitHub(); // Einmaliger Test-Sync
+        }
+    }
+
     </script>
 </body>
 </html>
