@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMV Hub - Digitales Schülerparlament</title>
+    <title>KMK-RS - Digitales SMV Forum</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -30,7 +30,6 @@
 </head>
 <body class="bg-darkbg text-slate-100 min-h-screen font-sans antialiased pb-20 md:pb-0">
 
-    <!-- Header / Navbar -->
     <header class="bg-cardbg border-b border-slate-800 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
@@ -45,19 +44,10 @@
             <!-- Desktop Navigation -->
             <nav class="hidden md:flex space-x-1">
                 <button onclick="switchTab('ideen')" id="nav-ideen" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition bg-accent text-white flex items-center space-x-2">
-                    <i data-lucide="lightbulb" class="w-4 h-4"></i> <span>Ideen-Box</span>
+                    <i data-lucide="lightbulb" class="w-4 h-4"></i> <span>Ideen & Abstimmungen</span>
                 </button>
                 <button onclick="switchTab('aktionen')" id="nav-aktionen" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800 flex items-center space-x-2">
                     <i data-lucide="calendar" class="w-4 h-4"></i> <span>Aktionen & Helfer</span>
-                </button>
-                <button onclick="switchTab('antraege')" id="nav-antraege" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800 flex items-center space-x-2">
-                    <i data-lucide="file-text" class="w-4 h-4"></i> <span>Anträge</span>
-                </button>
-                <button onclick="switchTab('projekte')" id="nav-projekte" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800 flex items-center space-x-2">
-                    <i data-lucide="kanban" class="w-4 h-4"></i> <span>Projekte</span>
-                </button>
-                <button onclick="switchTab('kummerkasten')" id="nav-kummerkasten" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800 flex items-center space-x-2">
-                    <i data-lucide="lock" class="w-4 h-4"></i> <span>Kummerkasten</span>
                 </button>
             </nav>
         </div>
@@ -71,37 +61,27 @@
         <button onclick="switchTab('aktionen')" id="mob-aktionen" class="mob-btn p-2 text-slate-400 flex flex-col items-center text-xs">
             <i data-lucide="calendar" class="w-5 h-5"></i> <span>Aktionen</span>
         </button>
-        <button onclick="switchTab('antraege')" id="mob-antraege" class="mob-btn p-2 text-slate-400 flex flex-col items-center text-xs">
-            <i data-lucide="file-text" class="w-5 h-5"></i> <span>Anträge</span>
-        </button>
-        <button onclick="switchTab('projekte')" id="mob-projekte" class="mob-btn p-2 text-slate-400 flex flex-col items-center text-xs">
-            <i data-lucide="kanban" class="w-5 h-5"></i> <span>Projekte</span>
-        </button>
-        <button onclick="switchTab('kummerkasten')" id="mob-kummerkasten" class="mob-btn p-2 text-slate-400 flex flex-col items-center text-xs">
-            <i data-lucide="lock" class="w-5 h-5"></i> <span>Kummerkasten</span>
-        </button>
     </div>
 
-    <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
-        <!-- 1. IDEEN-BOX TAB -->
+        <!-- 1. IDEEN & ABSTIMMUNGEN TAB -->
         <div id="tab-ideen" class="tab-content">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <div>
-                    <h2 class="text-2xl font-bold">Ideen-Box</h2>
-                    <p class="text-slate-400 text-sm">Reiche deine Vorschläge für die Schule ein und stimme ab.</p>
+                    <h2 class="text-2xl font-bold">Ideen zur Abstimmung</h2>
+                    <p class="text-slate-400 text-sm">Reiche deine Vorschläge für die Schule ein und stimme direkt darüber ab.</p>
                 </div>
                 <button onclick="openModal('ideaModal')" class="bg-accent hover:bg-accenthover text-white px-4 py-2 rounded-xl text-sm font-medium flex items-center space-x-2 transition shadow-lg shadow-indigo-500/20">
-                    <i data-lucide="plus" class="w-4 h-4"></i> <span>Idee einreichen</span>
+                    <i data-lucide="plus" class="w-4 h-4"></i> <span>Idee zur Abstimmung einreichen</span>
                 </button>
             </div>
             <!-- Filter Bar -->
             <div class="flex space-x-2 mb-6 overflow-x-auto pb-2">
                 <button onclick="filterIdeas('all')" class="filter-btn-idea active px-3 py-1.5 rounded-lg text-xs font-medium bg-accent text-white">Alle</button>
-                <button onclick="filterIdeas('Event')" class="filter-btn-idea px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">Events</button>
+                <button onclick="filterIdeas('Aktionen')" class="filter-btn-idea px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">Aktionen</button>
                 <button onclick="filterIdeas('Schulhof')" class="filter-btn-idea px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">Schulhof</button>
-                <button onclick="filterIdeas('Digitales')" class="filter-btn-idea px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">Digitales</button>
+                <button onclick="filterIdeas('Sonstiges')" class="filter-btn-idea px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">Sonstiges</button>
             </div>
             <!-- Grid -->
             <div id="ideasGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -125,69 +105,6 @@
             </div>
         </div>
 
-        <!-- 3. ANTRÄGE TAB -->
-        <div id="tab-antraege" class="tab-content hidden">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                <div>
-                    <h2 class="text-2xl font-bold">Anträge & Abstimmungen</h2>
-                    <p class="text-slate-400 text-sm">Aktuelle Beschlüsse und formelle Anträge des Schülerparlaments.</p>
-                </div>
-            </div>
-            <div id="motionsContainer" class="space-y-4">
-                <!-- Dynamically populated -->
-            </div>
-        </div>
-
-        <!-- 4. PROJEKTE TAB -->
-        <div id="tab-projekte" class="tab-content hidden">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                <div>
-                    <h2 class="text-2xl font-bold">Projekt-Tracker</h2>
-                    <p class="text-slate-400 text-sm">Woran die SMV gerade arbeitet und welchen Status Projekte haben.</p>
-                </div>
-            </div>
-            <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Dynamically populated -->
-            </div>
-        </div>
-
-        <!-- 5. KUMMERKASTEN TAB -->
-        <div id="tab-kummerkasten" class="tab-content hidden">
-            <div class="max-w-xl mx-auto bg-cardbg border border-slate-800 rounded-2xl p-6 shadow-xl">
-                <div class="flex items-center space-x-3 mb-4">
-                    <div class="bg-indigo-500/10 text-indigo-400 p-3 rounded-xl">
-                        <i data-lucide="shield-alert" class="w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-bold">Anonymer Kummerkasten</h2>
-                        <p class="text-slate-400 text-sm">Direkter Draht zu den Schülersprechern & Vertrauenslehrern.</p>
-                    </div>
-                </div>
-                <form id="grievanceForm" onsubmit="submitGrievance(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Kategorie</label>
-                        <select id="grievanceCategory" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
-                            <option>Schulklima & Mobbing</option>
-                            <option>Lob & Anregungen</option>
-                            <option>Ausstattung & Gebäude</option>
-                            <option>Sonstiges Anliegen</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Deine Nachricht</label>
-                        <textarea id="grievanceText" rows="4" required placeholder="Beschreibe dein Anliegen sachlich und konstruktiv..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent"></textarea>
-                    </div>
-                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-800/50 text-xs text-slate-400 flex items-center space-x-2">
-                        <i data-lucide="lock" class="w-4 h-4 text-emerald-400 shrink-0"></i>
-                        <span>Nachrichten werden vertraulich behandelt. Keine IP-Speicherung.</span>
-                    </div>
-                    <button type="submit" class="w-full bg-accent hover:bg-accenthover text-white py-2.5 rounded-xl font-medium text-sm transition shadow-lg shadow-indigo-500/20">
-                        Absenden
-                    </button>
-                </form>
-            </div>
-        </div>
-
     </main>
 
     <!-- MODAL: Idee einreichen -->
@@ -202,9 +119,9 @@
                 <div>
                     <label class="block text-xs font-medium text-slate-400 mb-1">Kategorie</label>
                     <select id="newIdeaCategory" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
-                        <option value="Event">Event</option>
+                        <option value="Aktionen">Aktionen</option>
                         <option value="Schulhof">Schulhof</option>
-                        <option value="Digitales">Digitales</option>
+                        <option value="Sonstiges">Sonstiges</option>
                     </select>
                 </div>
                 <div>
@@ -254,40 +171,10 @@
         </div>
     </div>
 
-    <!-- JavaScript App Logic -->
     <script>
-        // Initial Data Store (mit localStorage Fallback)
-        let ideas = JSON.parse(localStorage.getItem('smv_ideas')) || [
-            { id: 1, title: 'Wasserspender im Hauptgebäude', category: 'Schulhof', desc: 'Kostenloses frisches Wasser für alle Schüler wäre super.', votes: 42, userVoted: false },
-            { id: 2, title: 'Handy-Ladestationen in der Pausenhalle', category: 'Digitales', desc: 'Damit man im Notfall immer erreichbar ist.', votes: 35, userVoted: false },
-            { id: 3, title: 'Unterstufen-Disko vor den Ferien', category: 'Event', desc: 'Eine gemeinsame Party für die Klassen 5 bis 7.', votes: 28, userVoted: false }
-        ];
-
-        let actions = JSON.parse(localStorage.getItem('smv_actions')) || [
-            {
-                id: 1,
-                title: 'Tag der offenen Tür & Kuchenverkauf',
-                date: '2026-06-15',
-                location: 'Foyer',
-                desc: 'Wir verkaufen Kuchen für den guten Zweck und präsentieren die SMV.',
-                slots: [
-                    { name: 'Aufbau & Tische stellen', max: 4, helpers: ['Max (6a)', 'Tim (7b)'] },
-                    { name: 'Kuchenverkauf Schicht 1', max: 3, helpers: ['Sarah (8c)'] },
-                    { name: 'Abbau & Aufräumen', max: 5, helpers: [] }
-                ]
-            }
-        ];
-
-        let motions = [
-            { id: 1, title: 'Anschaffung von Sitzsäcken für die Bibliothek', status: 'Angenommen', yes: 18, no: 3, abstain: 2 },
-            { id: 2, title: 'Einführung eines einheitlichen Schullogos auf Hoodies', status: 'In Abstimmung', yes: 12, no: 10, abstain: 4 }
-        ];
-
-        let projects = [
-            { title: 'Schulhof-Begrünung', status: 'In Arbeit', progress: 60, tag: 'Umwelt' },
-            { title: 'Unterstufen-Sportturnier', status: 'Geplant', progress: 20, tag: 'Sport' },
-            { title: 'Digitaler Vertretungsplan-Screen', status: 'Abgeschlossen', progress: 100, tag: 'Technik' }
-        ];
+        // Data Store (mit localStorage Fallback)
+        let ideas = JSON.parse(localStorage.getItem('smv_ideas')) || [];
+        let actions = JSON.parse(localStorage.getItem('smv_actions')) || [];
 
         // Tab Switching Logic
         function switchTab(tabId) {
@@ -316,13 +203,28 @@
             window.scrollTo(0, 0);
         }
 
-        // Render Ideas
+        // Render Ideas with Abstimmung (Ja / Nein)
         function renderIdeas(filter = 'all') {
             const grid = document.getElementById('ideasGrid');
             grid.innerHTML = '';
             const filtered = filter === 'all' ? ideas : ideas.filter(i => i.category === filter);
 
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-slate-500 bg-cardbg/50 border border-slate-800/80 rounded-2xl">
+                        <i data-lucide="lightbulb" class="w-10 h-10 mx-auto mb-3 stroke-1 text-slate-600"></i>
+                        <p class="text-sm font-medium">Noch keine Ideen vorhanden.</p>
+                        <p class="text-xs text-slate-600 mt-1">Sei der Erste und reiche eine neue Idee zur Abstimmung ein!</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
             filtered.forEach(idea => {
+                const totalVotes = (idea.yes || 0) + (idea.no || 0);
+                const yesPct = totalVotes > 0 ? Math.round(((idea.yes || 0) / totalVotes) * 100) : 0;
+
                 grid.innerHTML += `
                     <div class="bg-cardbg border border-slate-800 rounded-2xl p-5 flex flex-col justify-between shadow-lg">
                         <div>
@@ -333,11 +235,27 @@
                             <h3 class="font-bold text-base mb-2">${idea.title}</h3>
                             <p class="text-slate-400 text-sm mb-4">${idea.desc}</p>
                         </div>
-                        <div class="flex items-center justify-between pt-3 border-t border-slate-800/60">
-                            <button onclick="voteIdea(${idea.id})" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-sm font-medium transition ${idea.userVoted ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}">
-                                <i data-lucide="thumbs-up" class="w-4 h-4"></i>
-                                <span>${idea.votes}</span>
-                            </button>
+
+                        <!-- Abstimmungsbereich -->
+                        <div class="pt-3 border-t border-slate-800/60">
+                            <div class="flex justify-between text-xs text-slate-400 mb-1">
+                                <span>Zustimmung: ${yesPct}%</span>
+                                <span>Gefällt ${idea.yes || 0} von ${totalVotes}</span>
+                            </div>
+                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden mb-3 flex">
+                                <div style="width: ${yesPct}%" class="bg-emerald-500 h-full transition-all"></div>
+                                <div style="width: ${100 - yesPct}%" class="bg-rose-500 h-full transition-all"></div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button onclick="voteIdea(${idea.id}, 'yes')" class="flex-1 flex items-center justify-center space-x-1 py-1.5 rounded-xl text-xs font-medium transition ${idea.userVote === 'yes' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}">
+                                    <i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>
+                                    <span>Dafür (${idea.yes || 0})</span>
+                                </button>
+                                <button onclick="voteIdea(${idea.id}, 'no')" class="flex-1 flex items-center justify-center space-x-1 py-1.5 rounded-xl text-xs font-medium transition ${idea.userVote === 'no' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/40' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}">
+                                    <i data-lucide="thumbs-down" class="w-3.5 h-3.5"></i>
+                                    <span>Dagegen (${idea.no || 0})</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -355,19 +273,28 @@
             renderIdeas(cat);
         }
 
-        function voteIdea(id) {
+        function voteIdea(id, type) {
             const idea = ideas.find(i => i.id === id);
-            if(idea) {
-                if(idea.userVoted) {
-                    idea.votes--;
-                    idea.userVoted = false;
-                } else {
-                    idea.votes++;
-                    idea.userVoted = true;
+            if(!idea) return;
+
+            if(!idea.yes) idea.yes = 0;
+            if(!idea.no) idea.no = 0;
+
+            if (idea.userVote === type) {
+                // Stimme zurückziehen
+                idea[type]--;
+                idea.userVote = null;
+            } else {
+                // Vorherige Stimme entfernen, falls vorhanden
+                if (idea.userVote) {
+                    idea[idea.userVote]--;
                 }
-                localStorage.setItem('smv_ideas', JSON.stringify(ideas));
-                renderIdeas();
+                idea[type]++;
+                idea.userVote = type;
             }
+
+            localStorage.setItem('smv_ideas', JSON.stringify(ideas));
+            renderIdeas();
         }
 
         function submitIdea(e) {
@@ -376,7 +303,16 @@
             const category = document.getElementById('newIdeaCategory').value;
             const desc = document.getElementById('newIdeaDesc').value;
 
-            ideas.unshift({ id: ideas.length + 1, title, category, desc, votes: 1, userVoted: true });
+            ideas.unshift({
+                id: Date.now().toString().slice(-4),
+                title,
+                category,
+                desc,
+                yes: 1,
+                no: 0,
+                userVote: 'yes'
+            });
+
             localStorage.setItem('smv_ideas', JSON.stringify(ideas));
             closeModal('ideaModal');
             document.getElementById('newIdeaTitle').value = '';
@@ -388,6 +324,18 @@
         function renderActions() {
             const container = document.getElementById('actionsContainer');
             container.innerHTML = '';
+
+            if (actions.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-slate-500 bg-cardbg/50 border border-slate-800/80 rounded-2xl">
+                        <i data-lucide="calendar" class="w-10 h-10 mx-auto mb-3 stroke-1 text-slate-600"></i>
+                        <p class="text-sm font-medium">Aktuell sind keine Aktionen geplant.</p>
+                        <p class="text-xs text-slate-600 mt-1">Erstelle eine neue Aktion, um Helfer zu organisieren!</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
 
             actions.forEach(action => {
                 let slotsHtml = '';
@@ -471,7 +419,6 @@
             const desc = document.getElementById('newActionDesc').value;
             const rawSlots = document.getElementById('newActionSlots').value;
 
-            // Slots parsen: z.B. "Aufbau (3), Kasse (2)"
             let parsedSlots = [];
             rawSlots.split(',').forEach(part => {
                 const match = part.match(/(.*?)\s*\((\d+)\)/);
@@ -496,61 +443,6 @@
             renderActions();
         }
 
-        // Render Motions
-        function renderMotions() {
-            const container = document.getElementById('motionsContainer');
-            container.innerHTML = '';
-            motions.forEach(m => {
-                const total = m.yes + m.no + m.abstain;
-                const yesPct = Math.round((m.yes / total) * 100);
-                container.innerHTML += `
-                    <div class="bg-cardbg border border-slate-800 rounded-2xl p-5 shadow-lg">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-base">${m.title}</h3>
-                            <span class="text-xs px-2.5 py-1 rounded-lg font-medium ${m.status === 'Angenommen' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'}">${m.status}</span>
-                        </div>
-                        <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden mb-3 flex">
-                            <div style="width: ${yesPct}%" class="bg-emerald-500 h-full"></div>
-                            <div style="width: ${100 - yesPct}%" class="bg-slate-700 h-full"></div>
-                        </div>
-                        <div class="flex justify-between text-xs text-slate-400">
-                            <span>Dafür: ${m.yes} (${yesPct}%)</span>
-                            <span>Dagegen: ${m.no}</span>
-                            <span>Enthaltung: ${m.abstain}</span>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        // Render Projects
-        function renderProjects() {
-            const grid = document.getElementById('projectsGrid');
-            grid.innerHTML = '';
-            projects.forEach(p => {
-                grid.innerHTML += `
-                    <div class="bg-cardbg border border-slate-800 rounded-2xl p-5 shadow-lg">
-                        <div class="flex justify-between items-start mb-3">
-                            <span class="bg-indigo-500/10 text-indigo-400 text-xs px-2.5 py-1 rounded-lg font-medium">${p.tag}</span>
-                            <span class="text-xs text-slate-400">${p.status}</span>
-                        </div>
-                        <h3 class="font-bold text-base mb-3">${p.title}</h3>
-                        <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden mb-2">
-                            <div style="width: ${p.progress}%" class="bg-accent h-full rounded-full"></div>
-                        </div>
-                        <div class="text-right text-xs text-slate-400">${p.progress}% abgeschlossen</div>
-                    </div>
-                `;
-            });
-        }
-
-        // Kummerkasten Submit
-        function submitGrievance(e) {
-            e.preventDefault();
-            alert('Deine Nachricht wurde erfolgreich und anonym an die Vertrauenslehrer & Schülersprecher übermittelt.');
-            document.getElementById('grievanceText').value = '';
-        }
-
         // Modal Controls
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
@@ -559,8 +451,6 @@
         window.onload = function() {
             renderIdeas();
             renderActions();
-            renderMotions();
-            renderProjects();
             lucide.createIcons();
         };
     </script>
