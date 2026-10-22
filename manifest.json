@@ -5,7 +5,7 @@
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#4f46e5",
-  "description": "Die offizielle App der SMV für Projektideen, Anträge und den Kummerkasten.",
+  "description": "Das digitale Forum SMV der KMK-Realschule.",
   "icons": [
     {
       "src": "icon-192.png",
