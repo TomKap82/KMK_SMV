@@ -456,7 +456,8 @@
             renderActions();
             lucide.createIcons();
         };
-   
+
+        // Service Worker Registrierung
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
               .then(() => console.log('Service Worker registriert!'));
