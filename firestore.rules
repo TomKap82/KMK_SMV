@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function admin() { return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
+    function str(v, size) { return v is string && v.size() > 0 && v.size() <= size; }
+    function validCategory(v) { return v in ['Aktionen', 'Schulhof', 'Sonstiges']; }
+
+    match /admins/{uid} {
+      allow get: if signedIn() && request.auth.uid == uid;
+      allow list, write: if false;
+    }
+    match /ideas/{id} {
+      allow read: if true;
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['title','category','desc','owner','createdAt'])
+        && request.resource.data.keys().hasAll(['title','category','desc','owner','createdAt'])
+        && str(request.resource.data.title,100) && str(request.resource.data.desc,1000)
+        && validCategory(request.resource.data.category)
+        && request.resource.data.owner == request.auth.uid
+        && request.resource.data.createdAt == request.time;
+      allow update, delete: if admin();
+      match /votes/{uid} {
+        allow read: if true;
+        allow create, update: if signedIn() && request.auth.uid == uid
+          && request.resource.data.keys().hasOnly(['choice','uid','updatedAt'])
+          && request.resource.data.keys().hasAll(['choice','uid','updatedAt'])
+          && request.resource.data.choice in ['yes','no']
+          && request.resource.data.uid == uid
+          && request.resource.data.updatedAt == request.time;
+        allow delete: if signedIn() && (request.auth.uid == uid || admin());
+      }
+    }
+    match /actions/{id} {
+      allow read: if true;
+      allow create: if admin()
+        && request.resource.data.keys().hasOnly(['title','date','location','desc','slots','owner','createdAt'])
+        && request.resource.data.keys().hasAll(['title','date','location','desc','slots','owner','createdAt'])
+        && str(request.resource.data.title,100) && str(request.resource.data.location,100)
+        && str(request.resource.data.desc,1000) && str(request.resource.data.date,10)
+        && request.resource.data.slots is list && request.resource.data.slots.size() > 0
+        && request.resource.data.slots.size() <= 10
+        && request.resource.data.owner == request.auth.uid
+        && request.resource.data.createdAt == request.time;
+      allow update, delete: if admin();
+      match /helpers/{uid} {
+        allow read: if true;
+        allow create: if signedIn() && request.auth.uid == uid
+          && request.resource.data.keys().hasOnly(['name','slot','uid','createdAt'])
+          && request.resource.data.keys().hasAll(['name','slot','uid','createdAt'])
+          && str(request.resource.data.name,50)
+          && request.resource.data.uid == uid
+          && request.resource.data.slot is int
+          && request.resource.data.slot >= 0
+          && request.resource.data.slot < get(/databases/$(database)/documents/actions/$(id)).data.slots.size()
+          && request.resource.data.createdAt == request.time;
+        allow update: if false;
+        allow delete: if signedIn() && (request.auth.uid == uid || admin());
+      }
+    }
+    match /{other=**} { allow read, write: if false; }
+  }
+}
