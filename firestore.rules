@@ -3,9 +3,8 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function signedIn() { return request.auth != null; }
     function admin() { return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
-    function str(v, size) { return v is string && v.size() > 0 && v.size() <= size; }
-    function validCategory(v) { return v in ['Aktionen', 'Schulhof', 'Sonstiges']; }
-
+    function str(v, maxSize) { return v is string && v.size() > 0 && v.size() <= maxSize; }
+    function validDate(v) { return v is string && v.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$'); }
     match /admins/{uid} {
       allow get: if signedIn() && request.auth.uid == uid;
       allow list, write: if false;
@@ -13,10 +12,9 @@ service cloud.firestore {
     match /ideas/{id} {
       allow read: if true;
       allow create: if signedIn()
-        && request.resource.data.keys().hasOnly(['title','category','desc','owner','createdAt'])
-        && request.resource.data.keys().hasAll(['title','category','desc','owner','createdAt'])
+        && request.resource.data.keys().hasOnly(['title','desc','owner','createdAt'])
+        && request.resource.data.keys().hasAll(['title','desc','owner','createdAt'])
         && str(request.resource.data.title,100) && str(request.resource.data.desc,1000)
-        && validCategory(request.resource.data.category)
         && request.resource.data.owner == request.auth.uid
         && request.resource.data.createdAt == request.time;
       allow update, delete: if admin();
@@ -28,7 +26,7 @@ service cloud.firestore {
           && request.resource.data.choice in ['yes','no']
           && request.resource.data.uid == uid
           && request.resource.data.updatedAt == request.time;
-        allow delete: if signedIn() && (request.auth.uid == uid || admin());
+        allow delete: if admin() || (signedIn() && request.auth.uid == uid);
       }
     }
     match /actions/{id} {
@@ -37,26 +35,40 @@ service cloud.firestore {
         && request.resource.data.keys().hasOnly(['title','date','location','desc','slots','owner','createdAt'])
         && request.resource.data.keys().hasAll(['title','date','location','desc','slots','owner','createdAt'])
         && str(request.resource.data.title,100) && str(request.resource.data.location,100)
-        && str(request.resource.data.desc,1000) && str(request.resource.data.date,10)
-        && request.resource.data.slots is list && request.resource.data.slots.size() > 0
-        && request.resource.data.slots.size() <= 10
+        && str(request.resource.data.desc,1000) && validDate(request.resource.data.date)
+        && request.resource.data.slots is list && request.resource.data.slots.size()>0
+        && request.resource.data.slots.size()<=10
         && request.resource.data.owner == request.auth.uid
         && request.resource.data.createdAt == request.time;
       allow update, delete: if admin();
-      match /helpers/{uid} {
+      match /helpers/{helperId} {
         allow read: if true;
-        allow create: if signedIn() && request.auth.uid == uid
+        // Neue Einträge: eine Dokument-ID je UID + Aufgabenbereich.
+        allow create: if signedIn()
+          && helperId == request.auth.uid + '_' + string(request.resource.data.slot)
           && request.resource.data.keys().hasOnly(['name','slot','uid','createdAt'])
           && request.resource.data.keys().hasAll(['name','slot','uid','createdAt'])
           && str(request.resource.data.name,50)
-          && request.resource.data.uid == uid
+          && request.resource.data.uid == request.auth.uid
           && request.resource.data.slot is int
           && request.resource.data.slot >= 0
           && request.resource.data.slot < get(/databases/$(database)/documents/actions/$(id)).data.slots.size()
           && request.resource.data.createdAt == request.time;
         allow update: if false;
-        allow delete: if signedIn() && (request.auth.uid == uid || admin());
+        // Alte Einträge (Dokument-ID = UID) können weiter entfernt werden.
+        allow delete: if admin() || (signedIn() && resource.data.uid == request.auth.uid);
       }
+    }
+    match /announcements/{id} {
+      allow read: if true;
+      allow create: if admin()
+        && request.resource.data.keys().hasOnly(['date','text','owner','createdAt'])
+        && request.resource.data.keys().hasAll(['date','text','owner','createdAt'])
+        && validDate(request.resource.data.date)
+        && str(request.resource.data.text,3000)
+        && request.resource.data.owner == request.auth.uid
+        && request.resource.data.createdAt == request.time;
+      allow update, delete: if admin();
     }
     match /{other=**} { allow read, write: if false; }
   }
