@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KMK-RS - Digitales SMV Forum</title>
+    <title>SMV Hub - Digitales Schülerparlament</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -65,11 +65,11 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
-        <!-- 1. IDEEN & ABSTIMMUNGEN TAB -->
+        <!-- 1. IDEEN-BOX & ABSTIMMUNG TAB -->
         <div id="tab-ideen" class="tab-content">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <div>
-                    <h2 class="text-2xl font-bold">Ideen zur Abstimmung</h2>
+                    <h2 class="text-2xl font-bold">Ideen & Abstimmungen</h2>
                     <p class="text-slate-400 text-sm">Reiche deine Vorschläge für die Schule ein und stimme direkt darüber ab.</p>
                 </div>
                 <button onclick="openModal('ideaModal')" class="bg-accent hover:bg-accenthover text-white px-4 py-2 rounded-xl text-sm font-medium flex items-center space-x-2 transition shadow-lg shadow-indigo-500/20">
@@ -114,7 +114,7 @@
             <form onsubmit="submitIdea(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-medium text-slate-400 mb-1">Titel</label>
-                    <input type="text" id="newIdeaTitle" required placeholder="z.B. weitere Aktion" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                    <input type="text" id="newIdeaTitle" required placeholder="z.B. Wasserspender auf dem Flur" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-slate-400 mb-1">Kategorie</label>
