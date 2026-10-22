@@ -1,6 +1,6 @@
 {
   "name": "KMK - Digitales SMV Forum",
-  "short_name": "SMV Hub",
+  "short_name": "SMV Forum",
   "start_url": "./Forum.html",
   "display": "standalone",
   "background_color": "#0f172a",
