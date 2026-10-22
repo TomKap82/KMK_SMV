@@ -1,1 +1,568 @@
+<!DOCTYPE html>
+<html lang="de" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMV Hub - Digitales Schülerparlament</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#0f172a',
+                        cardbg: '#1e293b',
+                        accent: '#4f46e5',
+                        accenthover: '#4338ca'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+<body class="bg-darkbg text-slate-100 min-h-screen font-sans antialiased pb-20 md:pb-0">
 
+    <!-- Header / Navbar -->
+    <header class="bg-cardbg border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-accent p-2 rounded-xl text-white">
+                    <i data-lucide="shield-check" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg tracking-tight">SMV Hub</h1>
+                    <p class="text-xs text-slate-400">Digitales Schülerparlament</p>
+                </div>
+            </div>
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-1">
+                <button onclick="switchTab('ideen')" id="nav-ideen" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition bg-accent text-white flex items-center space-x-2">
+                    <i data-lucide="lightbulb" class="w-4 h-4"></i> <span>Ideen-Box</span>
+                </button>
+                <button onclick="switchTab('aktionen')" id="nav-aktionen" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800 flex items-center space-x-2">
+                    <i data-lucide="calendar" class="w-4 h-4"></i> <span>Aktionen & Helfer</span>
+                </button>
+                <button onclick="switchTab('antraege')" id="nav-antraege" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800 flex items-center space-x-2">
+                    <i data-lucide="file-text" class="w-4 h-4"></i> <span>Anträge</span>
+                </button>
+                <button onclick="switchTab('projekte')" id="nav-projekte" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800 flex items-center space-x-2">
+                    <i data-lucide="kanban" class="w-4 h-4"></i> <span>Projekte</span>
+                </button>
+                <button onclick="switchTab('kummerkasten')" id="nav-kummerkasten" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800 flex items-center space-x-2">
+                    <i data-lucide="lock" class="w-4 h-4"></i> <span>Kummerkasten</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-cardbg border-t border-slate-800 z-50 flex justify-around p-2">
+        <button onclick="switchTab('ideen')" id="mob-ideen" class="mob-btn p-2 text-accent flex flex-col items-center text-xs">
+            <i data-lucide="lightbulb" class="w-5 h-5"></i> <span>Ideen</span>
+        </button>
+        <button onclick="switchTab('aktionen')" id="mob-aktionen" class="mob-btn p-2 text-slate-400 flex flex-col items-center text-xs">
+            <i data-lucide="calendar" class="w-5 h-5"></i> <span>Aktionen</span>
+        </button>
+        <button onclick="switchTab('antraege')" id="mob-antraege" class="mob-btn p-2 text-slate-400 flex flex-col items-center text-xs">
+            <i data-lucide="file-text" class="w-5 h-5"></i> <span>Anträge</span>
+        </button>
+        <button onclick="switchTab('projekte')" id="mob-projekte" class="mob-btn p-2 text-slate-400 flex flex-col items-center text-xs">
+            <i data-lucide="kanban" class="w-5 h-5"></i> <span>Projekte</span>
+        </button>
+        <button onclick="switchTab('kummerkasten')" id="mob-kummerkasten" class="mob-btn p-2 text-slate-400 flex flex-col items-center text-xs">
+            <i data-lucide="lock" class="w-5 h-5"></i> <span>Kummerkasten</span>
+        </button>
+    </div>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- 1. IDEEN-BOX TAB -->
+        <div id="tab-ideen" class="tab-content">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold">Ideen-Box</h2>
+                    <p class="text-slate-400 text-sm">Reiche deine Vorschläge für die Schule ein und stimme ab.</p>
+                </div>
+                <button onclick="openModal('ideaModal')" class="bg-accent hover:bg-accenthover text-white px-4 py-2 rounded-xl text-sm font-medium flex items-center space-x-2 transition shadow-lg shadow-indigo-500/20">
+                    <i data-lucide="plus" class="w-4 h-4"></i> <span>Idee einreichen</span>
+                </button>
+            </div>
+            <!-- Filter Bar -->
+            <div class="flex space-x-2 mb-6 overflow-x-auto pb-2">
+                <button onclick="filterIdeas('all')" class="filter-btn-idea active px-3 py-1.5 rounded-lg text-xs font-medium bg-accent text-white">Alle</button>
+                <button onclick="filterIdeas('Event')" class="filter-btn-idea px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">Events</button>
+                <button onclick="filterIdeas('Schulhof')" class="filter-btn-idea px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">Schulhof</button>
+                <button onclick="filterIdeas('Digitales')" class="filter-btn-idea px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">Digitales</button>
+            </div>
+            <!-- Grid -->
+            <div id="ideasGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+
+        <!-- 2. AKTIONEN & HELFER TAB -->
+        <div id="tab-aktionen" class="tab-content hidden">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold">Aktionen & Helferplaner</h2>
+                    <p class="text-slate-400 text-sm">Trage dich für SMV-Aktionen ein und hilf bei der Umsetzung.</p>
+                </div>
+                <button onclick="openModal('actionModal')" class="bg-accent hover:bg-accenthover text-white px-4 py-2 rounded-xl text-sm font-medium flex items-center space-x-2 transition shadow-lg shadow-indigo-500/20">
+                    <i data-lucide="plus" class="w-4 h-4"></i> <span>Aktion erstellen</span>
+                </button>
+            </div>
+            <div id="actionsContainer" class="space-y-6">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+
+        <!-- 3. ANTRÄGE TAB -->
+        <div id="tab-antraege" class="tab-content hidden">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold">Anträge & Abstimmungen</h2>
+                    <p class="text-slate-400 text-sm">Aktuelle Beschlüsse und formelle Anträge des Schülerparlaments.</p>
+                </div>
+            </div>
+            <div id="motionsContainer" class="space-y-4">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+
+        <!-- 4. PROJEKTE TAB -->
+        <div id="tab-projekte" class="tab-content hidden">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold">Projekt-Tracker</h2>
+                    <p class="text-slate-400 text-sm">Woran die SMV gerade arbeitet und welchen Status Projekte haben.</p>
+                </div>
+            </div>
+            <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+
+        <!-- 5. KUMMERKASTEN TAB -->
+        <div id="tab-kummerkasten" class="tab-content hidden">
+            <div class="max-w-xl mx-auto bg-cardbg border border-slate-800 rounded-2xl p-6 shadow-xl">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="bg-indigo-500/10 text-indigo-400 p-3 rounded-xl">
+                        <i data-lucide="shield-alert" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold">Anonymer Kummerkasten</h2>
+                        <p class="text-slate-400 text-sm">Direkter Draht zu den Schülersprechern & Vertrauenslehrern.</p>
+                    </div>
+                </div>
+                <form id="grievanceForm" onsubmit="submitGrievance(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Kategorie</label>
+                        <select id="grievanceCategory" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                            <option>Schulklima & Mobbing</option>
+                            <option>Lob & Anregungen</option>
+                            <option>Ausstattung & Gebäude</option>
+                            <option>Sonstiges Anliegen</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Deine Nachricht</label>
+                        <textarea id="grievanceText" rows="4" required placeholder="Beschreibe dein Anliegen sachlich und konstruktiv..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent"></textarea>
+                    </div>
+                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-800/50 text-xs text-slate-400 flex items-center space-x-2">
+                        <i data-lucide="lock" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                        <span>Nachrichten werden vertraulich behandelt. Keine IP-Speicherung.</span>
+                    </div>
+                    <button type="submit" class="w-full bg-accent hover:bg-accenthover text-white py-2.5 rounded-xl font-medium text-sm transition shadow-lg shadow-indigo-500/20">
+                        Absenden
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- MODAL: Idee einreichen -->
+    <div id="ideaModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-cardbg border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <h3 class="text-lg font-bold mb-4">Neue Idee einreichen</h3>
+            <form onsubmit="submitIdea(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Titel</label>
+                    <input type="text" id="newIdeaTitle" required placeholder="z.B. Wasserspender auf dem Flur" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Kategorie</label>
+                    <select id="newIdeaCategory" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                        <option value="Event">Event</option>
+                        <option value="Schulhof">Schulhof</option>
+                        <option value="Digitales">Digitales</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Beschreibung</label>
+                    <textarea id="newIdeaDesc" rows="3" required placeholder="Erkläre kurz deine Idee..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent"></textarea>
+                </div>
+                <div class="flex justify-end space-x-2 pt-2">
+                    <button type="button" onclick="closeModal('ideaModal')" class="px-4 py-2 rounded-xl text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">Abbrechen</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl text-sm font-medium bg-accent text-white hover:bg-accenthover">Einreichen</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Aktion erstellen -->
+    <div id="actionModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-cardbg border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <h3 class="text-lg font-bold mb-4">SMV-Aktion & Helferplan erstellen</h3>
+            <form onsubmit="submitAction(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Aktions-Titel</label>
+                    <input type="text" id="newActionTitle" required placeholder="z.B. Sommer-Schulfest" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Datum</label>
+                        <input type="date" id="newActionDate" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Ort</label>
+                        <input type="text" id="newActionLocation" required placeholder="z.B. Pausenhof" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Beschreibung</label>
+                    <textarea id="newActionDesc" rows="2" required placeholder="Worum geht es bei der Aktion?" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Aufgabenbereiche (Kommagetrennt mit Max-Anzahl in Klammern, z.B. Aufbau (3), Kuchenverkauf (4))</label>
+                    <input type="text" id="newActionSlots" required placeholder="Aufbau (3), Technik (2), Grillmeister (2)" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                </div>
+                <div class="flex justify-end space-x-2 pt-2">
+                    <button type="button" onclick="closeModal('actionModal')" class="px-4 py-2 rounded-xl text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">Abbrechen</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl text-sm font-medium bg-accent text-white hover:bg-accenthover">Aktion veröffentlichen</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript App Logic -->
+    <script>
+        // Initial Data Store (mit localStorage Fallback)
+        let ideas = JSON.parse(localStorage.getItem('smv_ideas')) || [
+            { id: 1, title: 'Wasserspender im Hauptgebäude', category: 'Schulhof', desc: 'Kostenloses frisches Wasser für alle Schüler wäre super.', votes: 42, userVoted: false },
+            { id: 2, title: 'Handy-Ladestationen in der Pausenhalle', category: 'Digitales', desc: 'Damit man im Notfall immer erreichbar ist.', votes: 35, userVoted: false },
+            { id: 3, title: 'Unterstufen-Disko vor den Ferien', category: 'Event', desc: 'Eine gemeinsame Party für die Klassen 5 bis 7.', votes: 28, userVoted: false }
+        ];
+
+        let actions = JSON.parse(localStorage.getItem('smv_actions')) || [
+            {
+                id: 1,
+                title: 'Tag der offenen Tür & Kuchenverkauf',
+                date: '2026-06-15',
+                location: 'Foyer',
+                desc: 'Wir verkaufen Kuchen für den guten Zweck und präsentieren die SMV.',
+                slots: [
+                    { name: 'Aufbau & Tische stellen', max: 4, helpers: ['Max (6a)', 'Tim (7b)'] },
+                    { name: 'Kuchenverkauf Schicht 1', max: 3, helpers: ['Sarah (8c)'] },
+                    { name: 'Abbau & Aufräumen', max: 5, helpers: [] }
+                ]
+            }
+        ];
+
+        let motions = [
+            { id: 1, title: 'Anschaffung von Sitzsäcken für die Bibliothek', status: 'Angenommen', yes: 18, no: 3, abstain: 2 },
+            { id: 2, title: 'Einführung eines einheitlichen Schullogos auf Hoodies', status: 'In Abstimmung', yes: 12, no: 10, abstain: 4 }
+        ];
+
+        let projects = [
+            { title: 'Schulhof-Begrünung', status: 'In Arbeit', progress: 60, tag: 'Umwelt' },
+            { title: 'Unterstufen-Sportturnier', status: 'Geplant', progress: 20, tag: 'Sport' },
+            { title: 'Digitaler Vertretungsplan-Screen', status: 'Abgeschlossen', progress: 100, tag: 'Technik' }
+        ];
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-accent', 'text-white');
+                btn.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+            });
+            const activeNav = document.getElementById('nav-' + tabId);
+            if(activeNav) {
+                activeNav.classList.add('bg-accent', 'text-white');
+                activeNav.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+            }
+
+            document.querySelectorAll('.mob-btn').forEach(btn => {
+                btn.classList.remove('text-accent');
+                btn.classList.add('text-slate-400');
+            });
+            const activeMob = document.getElementById('mob-' + tabId);
+            if(activeMob) {
+                activeMob.classList.add('text-accent');
+                activeMob.classList.remove('text-slate-400');
+            }
+            window.scrollTo(0, 0);
+        }
+
+        // Render Ideas
+        function renderIdeas(filter = 'all') {
+            const grid = document.getElementById('ideasGrid');
+            grid.innerHTML = '';
+            const filtered = filter === 'all' ? ideas : ideas.filter(i => i.category === filter);
+
+            filtered.forEach(idea => {
+                grid.innerHTML += `
+                    <div class="bg-cardbg border border-slate-800 rounded-2xl p-5 flex flex-col justify-between shadow-lg">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="bg-indigo-500/10 text-indigo-400 text-xs px-2.5 py-1 rounded-lg font-medium">${idea.category}</span>
+                                <span class="text-xs text-slate-500">ID #${idea.id}</span>
+                            </div>
+                            <h3 class="font-bold text-base mb-2">${idea.title}</h3>
+                            <p class="text-slate-400 text-sm mb-4">${idea.desc}</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-3 border-t border-slate-800/60">
+                            <button onclick="voteIdea(${idea.id})" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-sm font-medium transition ${idea.userVoted ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}">
+                                <i data-lucide="thumbs-up" class="w-4 h-4"></i>
+                                <span>${idea.votes}</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        function filterIdeas(cat) {
+            document.querySelectorAll('.filter-btn-idea').forEach(btn => {
+                btn.classList.remove('bg-accent', 'text-white');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            event.target.classList.remove('bg-slate-800', 'text-slate-300');
+            event.target.classList.add('bg-accent', 'text-white');
+            renderIdeas(cat);
+        }
+
+        function voteIdea(id) {
+            const idea = ideas.find(i => i.id === id);
+            if(idea) {
+                if(idea.userVoted) {
+                    idea.votes--;
+                    idea.userVoted = false;
+                } else {
+                    idea.votes++;
+                    idea.userVoted = true;
+                }
+                localStorage.setItem('smv_ideas', JSON.stringify(ideas));
+                renderIdeas();
+            }
+        }
+
+        function submitIdea(e) {
+            e.preventDefault();
+            const title = document.getElementById('newIdeaTitle').value;
+            const category = document.getElementById('newIdeaCategory').value;
+            const desc = document.getElementById('newIdeaDesc').value;
+
+            ideas.unshift({ id: ideas.length + 1, title, category, desc, votes: 1, userVoted: true });
+            localStorage.setItem('smv_ideas', JSON.stringify(ideas));
+            closeModal('ideaModal');
+            document.getElementById('newIdeaTitle').value = '';
+            document.getElementById('newIdeaDesc').value = '';
+            renderIdeas();
+        }
+
+        // Render Actions & Helpers
+        function renderActions() {
+            const container = document.getElementById('actionsContainer');
+            container.innerHTML = '';
+
+            actions.forEach(action => {
+                let slotsHtml = '';
+                action.slots.forEach((slot, sIdx) => {
+                    const isFull = slot.helpers.length >= slot.max;
+                    let helpersList = slot.helpers.map((h, hIdx) => `
+                        <span class="inline-flex items-center bg-slate-800 text-slate-300 text-xs px-2.5 py-1 rounded-lg mr-1 mb-1">
+                            ${h} 
+                            <button onclick="removeHelper(${action.id}, ${sIdx}, ${hIdx})" class="ml-1.5 text-slate-400 hover:text-red-400">&times;</button>
+                        </span>
+                    `).join('');
+
+                    slotsHtml += `
+                        <div class="bg-slate-900/60 border border-slate-800/80 rounded-xl p-4 mb-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium text-sm">${slot.name}</span>
+                                <span class="text-xs ${isFull ? 'text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded' : 'text-slate-400'}">
+                                    ${slot.helpers.length} / ${slot.max} Plätze
+                                </span>
+                            </div>
+                            <div class="mb-3 flex flex-wrap">${helpersList || '<span class="text-xs text-slate-500 italic">Noch keine Helfer eingetragen</span>'}</div>
+                            ${!isFull ? `
+                                <div class="flex gap-2">
+                                    <input type="text" id="helperName-${action.id}-${sIdx}" placeholder="Dein Name & Klasse (z.B. Tom 7a)" class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-accent">
+                                    <button onclick="addHelper(${action.id},${sIdx})" class="bg-accent hover:bg-accenthover text-white px-3 py-1.5 rounded-lg text-xs font-medium">Eintragen</button>
+                                </div>
+                            ` : '<div class="text-xs text-emerald-400 font-medium">Bereich voll besetzt! &check;</div>'}
+                        </div>
+                    `;
+                });
+
+                container.innerHTML += `
+                    <div class="bg-cardbg border border-slate-800 rounded-2xl p-6 shadow-lg">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+                            <div>
+                                <h3 class="text-lg font-bold">${action.title}</h3>
+                                <p class="text-xs text-indigo-400 flex items-center space-x-1 mt-1">
+                                    <i data-lucide="calendar" class="w-3.5 h-3.5"></i> <span>${action.date}</span> &bull; 
+                                    <i data-lucide="map-pin" class="w-3.5 h-3.5 ml-1"></i> <span>${action.location}</span>
+                                </p>
+                            </div>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-4">${action.desc}</p>
+                        <div class="border-t border-slate-800/80 pt-4">
+                            <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Aufgabenbereiche & Helfer</h4>
+                            ${slotsHtml}
+                        </div>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        function addHelper(actionId, slotIdx) {
+            const input = document.getElementById(`helperName-${actionId}-${slotIdx}`);
+            const val = input.value.trim();
+            if(!val) return;
+
+            const action = actions.find(a => a.id === actionId);
+            if(action && action.slots[slotIdx].helpers.length < action.slots[slotIdx].max) {
+                action.slots[slotIdx].helpers.push(val);
+                localStorage.setItem('smv_actions', JSON.stringify(actions));
+                renderActions();
+            }
+        }
+
+        function removeHelper(actionId, slotIdx, helperIdx) {
+            const action = actions.find(a => a.id === actionId);
+            if(action) {
+                action.slots[slotIdx].helpers.splice(helperIdx, 1);
+                localStorage.setItem('smv_actions', JSON.stringify(actions));
+                renderActions();
+            }
+        }
+
+        function submitAction(e) {
+            e.preventDefault();
+            const title = document.getElementById('newActionTitle').value;
+            const date = document.getElementById('newActionDate').value;
+            const location = document.getElementById('newActionLocation').value;
+            const desc = document.getElementById('newActionDesc').value;
+            const rawSlots = document.getElementById('newActionSlots').value;
+
+            // Slots parsen: z.B. "Aufbau (3), Kasse (2)"
+            let parsedSlots = [];
+            rawSlots.split(',').forEach(part => {
+                const match = part.match(/(.*?)\s*\((\d+)\)/);
+                if(match) {
+                    parsedSlots.push({ name: match[1].trim(), max: parseInt(match[2]), helpers: [] });
+                } else if(part.trim()) {
+                    parsedSlots.push({ name: part.trim(), max: 3, helpers: [] });
+                }
+            });
+
+            actions.unshift({
+                id: Date.now(),
+                title,
+                date,
+                location,
+                desc,
+                slots: parsedSlots.length > 0 ? parsedSlots : [{ name: 'Helfer Allgemein', max: 5, helpers: [] }]
+            });
+
+            localStorage.setItem('smv_actions', JSON.stringify(actions));
+            closeModal('actionModal');
+            renderActions();
+        }
+
+        // Render Motions
+        function renderMotions() {
+            const container = document.getElementById('motionsContainer');
+            container.innerHTML = '';
+            motions.forEach(m => {
+                const total = m.yes + m.no + m.abstain;
+                const yesPct = Math.round((m.yes / total) * 100);
+                container.innerHTML += `
+                    <div class="bg-cardbg border border-slate-800 rounded-2xl p-5 shadow-lg">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-base">${m.title}</h3>
+                            <span class="text-xs px-2.5 py-1 rounded-lg font-medium ${m.status === 'Angenommen' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'}">${m.status}</span>
+                        </div>
+                        <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden mb-3 flex">
+                            <div style="width: ${yesPct}%" class="bg-emerald-500 h-full"></div>
+                            <div style="width: ${100 - yesPct}%" class="bg-slate-700 h-full"></div>
+                        </div>
+                        <div class="flex justify-between text-xs text-slate-400">
+                            <span>Dafür: ${m.yes} (${yesPct}%)</span>
+                            <span>Dagegen: ${m.no}</span>
+                            <span>Enthaltung: ${m.abstain}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Render Projects
+        function renderProjects() {
+            const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = '';
+            projects.forEach(p => {
+                grid.innerHTML += `
+                    <div class="bg-cardbg border border-slate-800 rounded-2xl p-5 shadow-lg">
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="bg-indigo-500/10 text-indigo-400 text-xs px-2.5 py-1 rounded-lg font-medium">${p.tag}</span>
+                            <span class="text-xs text-slate-400">${p.status}</span>
+                        </div>
+                        <h3 class="font-bold text-base mb-3">${p.title}</h3>
+                        <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden mb-2">
+                            <div style="width: ${p.progress}%" class="bg-accent h-full rounded-full"></div>
+                        </div>
+                        <div class="text-right text-xs text-slate-400">${p.progress}% abgeschlossen</div>
+                    </div>
+                `;
+            });
+        }
+
+        // Kummerkasten Submit
+        function submitGrievance(e) {
+            e.preventDefault();
+            alert('Deine Nachricht wurde erfolgreich und anonym an die Vertrauenslehrer & Schülersprecher übermittelt.');
+            document.getElementById('grievanceText').value = '';
+        }
+
+        // Modal Controls
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        // Init on Load
+        window.onload = function() {
+            renderIdeas();
+            renderActions();
+            renderMotions();
+            renderProjects();
+            lucide.createIcons();
+        };
+    </script>
+</body>
+</html>
