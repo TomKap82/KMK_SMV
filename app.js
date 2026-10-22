@@ -4,7 +4,7 @@ import { getFirestore, collection, doc, addDoc, setDoc, deleteDoc, onSnapshot, g
 import { firebaseConfig } from './firebase-config.js';
 const $=id=>document.getElementById(id);
 const auth=getAuth(initializeApp(firebaseConfig));const db=getFirestore();
-let user=null,isAdmin=false,ideas=[],actions=[],announcements=[],currentTab='ideen';
+let user=null,isAdmin=false,ideas=[],actions=[],announcements=[],currentTab='ankuendigungen';
 const votes=new Map(),helpers=new Map(),subscriptions=new Map();let offIdeas,offActions,offAnnouncements;
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const short=(v,n)=>String(v??'').trim().slice(0,n);
