@@ -457,11 +457,10 @@
             lucide.createIcons();
         };
    
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
-          .then(() => console.log('Service Worker registriert!'));
-      }
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+              .then(() => console.log('Service Worker registriert!'));
+        }
     </script>
 </body>
 </html>
