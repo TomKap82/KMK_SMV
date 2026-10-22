@@ -4,8 +4,5 @@ const firebaseConfig = {
   apiKey: "AIzaSyDS3F_j6Yy4SXf6Alp0xeCwlIIYpHrXJm8",
   authDomain: "kmksmv-3dbe3.firebaseapp.com",
   projectId: "kmksmv-3dbe3",
-  storageBucket: "kmksmv-3dbe3.firebasestorage.app",
-  messagingSenderId: "1081347670445",
   appId: "1:1081347670445:web:d4e2494ec38d08c62f6124",
-  measurementId: "G-SHKHTCBX7P"
 };
