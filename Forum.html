@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digitales Forum der SMV</title>
+    <title>SMV Hub - Digitales Schülerparlament</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -38,8 +38,8 @@
                     <i data-lucide="shield-check" class="w-6 h-6"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg tracking-tight">Konrad-Max-Kunz-Realschule</h1>
-                    <p class="text-xs text-slate-400">Digitales SMV Forum</p>
+                    <h1 class="font-bold text-lg tracking-tight">SMV Hub</h1>
+                    <p class="text-xs text-slate-400">Digitales Schülerparlament</p>
                 </div>
             </div>
             <!-- Desktop Navigation -->
@@ -257,7 +257,11 @@
     <!-- JavaScript App Logic -->
     <script>
         // Initial Data Store (mit localStorage Fallback)
-        let ideas = JSON.parse(localStorage.getItem('smv_ideas')) ||;
+        let ideas = JSON.parse(localStorage.getItem('smv_ideas')) || [
+            { id: 1, title: 'Wasserspender im Hauptgebäude', category: 'Schulhof', desc: 'Kostenloses frisches Wasser für alle Schüler wäre super.', votes: 42, userVoted: false },
+            { id: 2, title: 'Handy-Ladestationen in der Pausenhalle', category: 'Digitales', desc: 'Damit man im Notfall immer erreichbar ist.', votes: 35, userVoted: false },
+            { id: 3, title: 'Unterstufen-Disko vor den Ferien', category: 'Event', desc: 'Eine gemeinsame Party für die Klassen 5 bis 7.', votes: 28, userVoted: false }
+        ];
 
         let actions = JSON.parse(localStorage.getItem('smv_actions')) || [
             {
